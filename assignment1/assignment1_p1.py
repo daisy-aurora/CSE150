@@ -21,7 +21,21 @@ def getPossibleActions(currentPrime):
     # Note - this should not include the prime numbers
     # which have already been processed , either in the
     # frontier or in the closed list .
-    listOfPrimes = 0
+    listOfPrimes = []
+    
+    currPrimeList = list(map(int, str(currentPrime)))
+    
+    for prime in allPrime:
+        primeList = list(map(int, str(prime)))
+        differences = 0
+        
+        for i in range(0 , len(currPrimeList)):
+            if currPrimeList[i] != primeList[i]:
+                differences += 1
+        
+        if differences == 1:
+            listOfPrimes.append(prime)
+    
     return listOfPrimes
 
 def getPath(startingPrime ,finalPrime): 
@@ -39,8 +53,16 @@ def getAllPrimes(startingPrime, finalPrime):
 def main():
     primes=str(sys.stdin.readline()).split()
     getAllPrimes(primes[0] ,primes[1])
+    
+    # THIS PART IS FOR TESTING PURPOSE
     for p in allPrime:
-        print(p)
+        print(p),
+        lists = getPossibleActions(p)
+        for x in lists:
+            print(x),
+        print
+    # END OF TESTING CODE
+    
     #print(getPath(primes[0] ,primes[1]))
 
 if __name__ == '__main__':
