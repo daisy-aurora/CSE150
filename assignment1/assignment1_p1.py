@@ -1,7 +1,15 @@
-__author__=' daurora@ucsd.edu, A99407185, '
+__author__=' daurora@ucsd.edu, A99407185, msarwo@ucsd.edu, A12496484'
 import sys
+import Queue
 
 allPrime = []
+path = []
+potential = set()
+
+class Node:
+    def __init__(self, val):
+        self.parent  = None
+        self.val = val
 
 def checkPrime(num):
     if num < 2:
@@ -22,25 +30,47 @@ def getPossibleActions(currentPrime):
     # which have already been processed , either in the
     # frontier or in the closed list .
     listOfPrimes = []
-    
+
     currPrimeList = list(map(int, str(currentPrime)))
-    
+
     for prime in allPrime:
         primeList = list(map(int, str(prime)))
         differences = 0
-        
+
         for i in range(0 , len(currPrimeList)):
             if currPrimeList[i] != primeList[i]:
                 differences += 1
-        
+
         if differences == 1:
             listOfPrimes.append(prime)
-    
+
     return listOfPrimes
 
-def getPath(startingPrime ,finalPrime): 
+def getPath(startingPrime ,finalPrime):
     # your code here
-    path = 0
+    root = Node(startingPrime)
+    q = Queue.Queue()
+    q.put(root)
+
+    if startingPrime == finalPrime:
+        path.append(root.val)
+        return path
+    while not q.empty():
+        cur = q.get()
+        potential.add(cur.value)
+        pList = getPossibleActions(cur.val)
+        for n in pList:
+            if n not in potential:
+                nextNode = Node(n, cur)
+                if n == finalPrime:
+                    temp = cur
+                    while temp.parent != None:
+                        path.append(temp.val)
+                        temp = cur.parent
+                    return path.reverse()
+                q.put(nextNode)
+
+    print("UNSOLVABLE")
     return path
 
 def getAllPrimes(startingPrime, finalPrime):
@@ -53,7 +83,7 @@ def getAllPrimes(startingPrime, finalPrime):
 def main():
     primes=str(sys.stdin.readline()).split()
     getAllPrimes(primes[0] ,primes[1])
-    
+
     # THIS PART IS FOR TESTING PURPOSE
     for p in allPrime:
         print(p),
@@ -62,8 +92,8 @@ def main():
             print(x),
         print
     # END OF TESTING CODE
-    
-    #print(getPath(primes[0] ,primes[1]))
+
+    print(getPath(primes[0] ,primes[1]))
 
 if __name__ == '__main__':
     main()
