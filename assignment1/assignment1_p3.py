@@ -42,7 +42,7 @@ def getAllPrimes(startingPrime, finalPrime):
     for x in range(int(startingPrime), int(finalPrime)):
         checkPrimeResult = checkPrime(x)
         if checkPrimeResult == True:
-            allPrime.append(primeNode)
+            allPrime.append(x)
     allPrime.append(finalPrime)
 
 class Stack:
