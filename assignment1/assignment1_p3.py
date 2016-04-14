@@ -42,7 +42,7 @@ def getAllPrimes(startingPrime, finalPrime):
     for x in range(int(startingPrime), int(finalPrime)):
         checkPrimeResult = checkPrime(x)
         if checkPrimeResult == True:
-            allPrime.append(primeNode)
+            allPrime.append(x)
     allPrime.append(finalPrime)
 
 class Stack:
@@ -69,7 +69,7 @@ def dfs (startingPrime, finalPrime, depth):
 			allPrime.remove(i)
 			break
 
-	while !s.empty():
+	while not s.empty():
 		cur = s.pop()
 		curDepth = cur.depth
 
