@@ -69,7 +69,7 @@ def dfs (startingPrime, finalPrime, depth):
 			allPrime.remove(i)
 			break
 
-	while !s.empty():
+	while not s.empty():
 		cur = s.pop()
 		curDepth = cur.depth
 
