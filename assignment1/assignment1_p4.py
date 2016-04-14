@@ -5,7 +5,6 @@ import Queue
 allPrime = []
 visited = []
 path = []
-potential = set()
 
 class Node:
     def __init__(self, parent, val):
