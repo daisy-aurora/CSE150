@@ -1,15 +1,15 @@
 __author__=' daurora@ucsd.edu, A99407185, msarwo@ucsd.edu, A12496484'
 import sys
-import math
 
 allPrime = []
+visited = []
 path = []
 
 class Node:
-	depth  = 0
-	def __init__(self, val):
-		self.parent  = None
-		self.val = val
+    def __init__(self, parent, val, depth):
+        self.parent = parent
+        self.val = val
+        self.depth = depth
 
 def checkPrime(num):
     if num < 2:
@@ -30,15 +30,25 @@ def getPossibleActions(currentPrime):
     # which have already been processed , either in the
     # frontier or in the closed list .
     listOfPrimes = []
+
     currPrimeList = list(map(int, str(currentPrime)))
+
     for prime in allPrime:
         primeList = list(map(int, str(prime)))
         differences = 0
+        
         for i in range(0 , len(currPrimeList)):
             if currPrimeList[i] != primeList[i]:
                 differences += 1
+
         if differences == 1:
-            listOfPrimes.append(prime)
+            isVisited = False
+            for visitedNumber in visited:
+                if int(visitedNumber) == int(prime):
+                    isVisited = True
+            if isVisited == False:
+                listOfPrimes.append(prime)
+
     return listOfPrimes
 
 def getAllPrimes(startingPrime, finalPrime):
@@ -61,46 +71,107 @@ class Stack:
             self.elts = []
 
 def getPath (startingPrime, finalPrime):
-	root = Node(startingPrime, None)
-	s = Stack()
-	s.append(root)
-	curDepth = 0
+    root = Node(None, startingPrime, 0)
+    s = Stack()
+    s.append(root)
+    curDepth = 0
 
-	for i in allPrime:
-		if(i.val == startingPrime):
-			allPrime.remove(i)
-			break
+    #COMMENTED OUT
+#     for i in allPrime:
+#         if i == startingPrime:
+#             allPrime.remove(i)
+#             break
+    if startingPrime == finalPrime:
+        return str(startingPrime)
 
-	while not s.empty():
-		cur = s.pop()
-		curDepth = cur.depth
+    while not s.empty():
+        cur = s.pop()
+        #print("I'm here bro")
+            
+        curDepth = cur.depth
+#         print(cur.val),
+#         print(curDepth)
+        # COMMENTED OUT, POSSIBLE WRONG CODE?
+#         if(cur.val == finalPrime):
+#             while(cur.parent != None):
+#                 path.insert(0, cur.val)
+#                 cur = cur.parent
+#             path.insert(0, cur.val)
+#             return path
+        numberAlreadyVisited = False
+        for visitedNumbers in visited:  
+            # TEST CODE 
+#             print("check :"),
+#             print(visitedNumbers),
+#             print("vs "),
+#             print(cur.val) 
+            # END OF TEST CODE
+            if int(cur.val) == int(visitedNumbers):
+#                 print("same! so it's already been visited!")
+                numberAlreadyVisited = True
+        
+        #number has not been visited, set it as visited
+        if numberAlreadyVisited == False:
+            # TEST CODE
+#             print("not visited! pushed: "),
+#             print(cur.val)
+            # END OF TEST CODE
+            visited.append(cur.val)
+        
+        if int(cur.val) == int(finalPrime):
+            temp = cur
+            while temp.parent is not None:
+                path.append(temp.val)
+                temp = temp.parent
+            
+            #append the staring prime
+            path.append(temp.val)
+            
+            #reverse the list
+            path.reverse()
+            
+            #convert the list to string
+            result = ""
+            for x in path:
+                result+= str(x) + " "
+            return(result)
 
-		if(cur.val == finalPrime):
-			while(cur.parent != None):
-				path.insert(0, cur.val)
-				cur = cur.parent
-			path.insert(0, cur.val)
-			return path
-
-		if(curDepth <= 5):
-			for i in allPrime:
-				i.depth = curDepth + 1
-				s.append(i)
-
-	print("UNSOLVABLE")
-	return path
+        pList = getPossibleActions(cur.val)
+#         for y in pList:
+#             print(y),
+#         print
+        
+        pList.reverse()
+        if(curDepth < 5):
+            for i in pList:
+                #print(i), 
+                #COMMENTED OUT
+#                 i.depth = curDepth + 1
+#                 s.append(i)
+                nextNode = Node(cur, i, curDepth + 1)
+                # TEST CODE
+#                 print("push stack: "),
+#                 print("parent: "),
+#                 print(cur.val),
+#                 print("value: "),
+#                 print(i)
+                # TEST CODE
+                s.append(nextNode)
+    
+    return("UNSOLVABLE")
 
 def main():
     primes=str(sys.stdin.readline()).split()
     getAllPrimes(primes[0] ,primes[1])
-
+    #visited.append(int(primes[0]))
+    
     # THIS PART IS FOR TESTING PURPOSE
-    for p in allPrime:
-        print(p),
-        lists = getPossibleActions(p)
-        for x in lists:
-            print(x),
-        print
+#     for p in allPrime:
+#         print(p),
+#         lists = getPossibleActions(p)
+#         for x in lists:
+#             print(x),
+#         print
     # END OF TESTING CODE
 
     print(getPath(primes[0] ,primes[1]))

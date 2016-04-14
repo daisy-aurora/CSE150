@@ -5,7 +5,6 @@ import Queue
 allPrime = []
 visited = []
 path = []
-potential = set()
 
 class Node:
     def __init__(self, parent, val):
@@ -60,8 +59,8 @@ def getPath(startingPrime ,finalPrime):
     q.put(root)
 
     if startingPrime == finalPrime:
-        path.append(root.val)
-        return path
+        return str(startingPrime)
+    
     while not q.empty():
         # CODE TEST HERE
 #         for elem in list(q.queue):
