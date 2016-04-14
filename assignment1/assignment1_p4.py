@@ -1,3 +1,4 @@
+from matplotlib.font_manager import path
 __author__=' daurora@ucsd.edu, A99407185, msarwo@ucsd.edu, A12496484'
 import sys
 import Queue
@@ -73,17 +74,19 @@ def getPath(startingPrime ,finalPrime):
             #append the staring prime
             path.append(temp.val)
 
+            result2 = ""
+            for x in path:
+                if(x != startingPrime):
+                    result2 += str(x) + " "
+                    
             #reverse the list
             path.reverse()
 
             #convert the list to string
             result1 = ""
-            result2 = ""
             for x in path:
                 if(x != finalPrime):
                     result1 += str(x) + " "
-                if(x != startingPrime):
-                    result2 += str(x) + " "
             print(result1)
             print(result2)
             
