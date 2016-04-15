@@ -1,4 +1,3 @@
-from matplotlib.font_manager import path
 __author__=' daurora@ucsd.edu, A99407185, msarwo@ucsd.edu, A12496484'
 import sys
 import Queue
@@ -96,7 +95,7 @@ def getPath(startingPrime ,finalPrime):
             nextNode = Node(cur, n)
             q.put(nextNode)
 
-    return("UNSOLVABLE")
+    print("UNSOLVABLE")
 
 def getAllPrimes(startingPrime, finalPrime):
     startingPrimeLength = len(startingPrime)
