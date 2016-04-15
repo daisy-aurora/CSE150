@@ -52,6 +52,12 @@ def getPossibleActions(currentPrime):
     return listOfPrimes
 
 def getAllPrimes(startingPrime, finalPrime):
+    startingPrimeLength = len(startingPrime)
+    finalPrimeLength = len(finalPrime)
+    
+    if startingPrimeLength != finalPrimeLength:
+        return
+    
     for x in range(int(startingPrime), int(finalPrime)):
         checkPrimeResult = checkPrime(x)
         if checkPrimeResult == True:

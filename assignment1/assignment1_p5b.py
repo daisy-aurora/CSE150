@@ -132,7 +132,7 @@ def getPath (startingPrime, finalPrime):
             #if n not in potential:
             hammingDistance = calculateDistance(finalPrime, n)
             nextNode = Node(cur, n, curDist + 1, hammingDistance)
-            estimatedTotalCost = curDist + hammingDistance + 1
+            estimatedTotalCost = hammingDistance
             pq.push(nextNode, estimatedTotalCost)
     
     return("UNSOLVABLE")
