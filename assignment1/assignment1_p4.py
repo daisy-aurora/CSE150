@@ -86,8 +86,9 @@ def getPath(startingPrime ,finalPrime):
             for x in path:
                 if(x != finalPrime):
                     result1 += str(x) + " "
-            print(result1)
-            print(result2)
+            
+            result = result1 + "\n" + result2
+            return(result)
             
         pList = getPossibleActions(cur.val)
         for n in pList:
@@ -95,7 +96,7 @@ def getPath(startingPrime ,finalPrime):
             nextNode = Node(cur, n)
             q.put(nextNode)
 
-    print("UNSOLVABLE")
+    return("UNSOLVABLE")
 
 def getAllPrimes(startingPrime, finalPrime):
     startingPrimeLength = len(startingPrime)
@@ -124,7 +125,7 @@ def main():
     #    print
     # END OF TESTING CODE
 
-    getPath(primes[0] ,primes[1])
+    print(getPath(primes[0] ,primes[1]))
 
 if __name__ == '__main__':
     main()
