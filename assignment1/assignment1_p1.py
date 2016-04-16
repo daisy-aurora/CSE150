@@ -6,6 +6,8 @@ allPrime = []
 visited = []
 path = []
 
+out = sys.stdout
+
 class Node:
     def __init__(self, parent, val):
         self.parent = parent
@@ -127,8 +129,12 @@ def main():
     #        print(x),
     #    print
     # END OF TESTING CODE
-
-    print(getPath(primes[0] ,primes[1]))
+    
+    resultText = getPath(primes[0] ,primes[1])
+    
+    out.write(resultText)
+    out.write('\n')
+    out.close()
 
 if __name__ == '__main__':
     main()
