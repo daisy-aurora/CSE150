@@ -60,8 +60,7 @@ def getPath(startingPrime ,finalPrime):
 
     if startingPrime == finalPrime:
         path.append(root.val)
-        print(startingPrime)
-        print(finalPrime)
+        return(startingPrime)
     while not q.empty():
         cur = q.get()
         if cur.val == finalPrime:
