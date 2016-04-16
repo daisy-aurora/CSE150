@@ -138,20 +138,22 @@ def getPath (startingPrime, finalPrime):
     return("UNSOLVABLE")
 
 def main():
-    primes=str(sys.stdin.readline()).split()
-    getAllPrimes(primes[0] ,primes[1])
-    #visited.append(int(primes[0]))
+    for inputLine in sys.stdin:
+        primes=str(inputLine).split()
+        getAllPrimes(primes[0] ,primes[1])
+        #visited.append(int(primes[0]))
+        
+        # THIS PART IS FOR TESTING PURPOSE
+    #     for p in allPrime:
+    #         print(p),
+    #         lists = getPossibleActions(p)
+    #         for x in lists:
+    #             print(x),
+    #         print
+        # END OF TESTING CODE
     
-    # THIS PART IS FOR TESTING PURPOSE
-#     for p in allPrime:
-#         print(p),
-#         lists = getPossibleActions(p)
-#         for x in lists:
-#             print(x),
-#         print
-    # END OF TESTING CODE
-
-    print(getPath(primes[0] ,primes[1]))
+        sys.stdout.write(getPath(primes[0] ,primes[1]))
+        sys.stdout.write("\n")
 
 if __name__ == '__main__':
     main()

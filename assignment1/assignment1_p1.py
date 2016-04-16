@@ -117,24 +117,25 @@ def getAllPrimes(startingPrime, finalPrime):
     allPrime.append(finalPrime)
 
 def main():
-    primes=str(sys.stdin.readline()).split()
-    getAllPrimes(primes[0] ,primes[1])
-    visited.append(int(primes[0]))
-    
-    # THIS PART IS FOR TESTING PURPOSE
-    #for p in allPrime:
-    #    print(p),
-    #    lists = getPossibleActions(p)
-    #    for x in lists:
-    #        print(x),
-    #    print
-    # END OF TESTING CODE
-    
-    resultText = getPath(primes[0] ,primes[1])
-    
-    out.write(resultText)
-    out.write('\n')
-    out.close()
+    for inputLine in sys.stdin:
+        primes=str(inputLine).split()
+        getAllPrimes(primes[0] ,primes[1])
+        visited.append(int(primes[0]))
+        
+        # THIS PART IS FOR TESTING PURPOSE
+        #for p in allPrime:
+        #    print(p),
+        #    lists = getPossibleActions(p)
+        #    for x in lists:
+        #        print(x),
+        #    print
+        # END OF TESTING CODE
+        
+        resultText = getPath(primes[0] ,primes[1])
+        
+        out.write(resultText)
+        out.write('\n')
+    #    out.close()
 
 if __name__ == '__main__':
     main()
