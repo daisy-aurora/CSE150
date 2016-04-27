@@ -1,0 +1,2 @@
+State.initial(3, 3)
+State(None, [3, 3, 3, 0, 3, 3, 3, 0], 0)

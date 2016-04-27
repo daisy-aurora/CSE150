@@ -1,0 +1,2 @@
+State.initial(2, 2)
+State([2, 2, 0, 2, 2, 0], 0)
