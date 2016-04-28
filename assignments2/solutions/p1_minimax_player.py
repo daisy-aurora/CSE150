@@ -8,61 +8,50 @@ class MinimaxPlayer(Player):
     def __init__(self):
         self.cache ={}
 
-    player = None
-    bestAction = None
+    #player = None
 
     def minimax(self, state, moveNum):
-        global index, bestAction
+        global bestAction
         index = state.M * 2 + 2
         actions = state.actions()
 
+        # return utility if terminal
         if state.is_terminal():
             return state.utility(player)
-        elif player.row == state.player_row:
-            utility = max(state, moveNum, actions)
-        else:
-            utility = min(state, moveNum, actions)
+
+        # initialize utility
+        if player.row == state.player_row: # if max set to - infinity
+            maxTurn = True
+            utility = -999
+        else: # if min set to infinity
+            maxTurn = False
+            utility = 999
+
+        if not(actions):
+            nextState = State(state.board, state.opponent_row, state.player)
+            utility = self.minimax(nextState, moveNum + 1)
+
+        while (actions):
+            if maxTurn:
+                curAction = actions.pop()
+            else:
+                curAction = actions.pop(0)
+            nextState = state.result(curAction)
+            tempV = self.minimax(nextState, moveNum + 1)
+
+            if (maxTurn and utility <= tempV):
+                utility = tempV
+                if (moveNum == 1):
+                    bestAction = curAction
+                    index = curAction.index
+
+            elif utility > tempV:
+                utility = tempV
+                if (moveNum == 1):
+                    bestAction = curAction
+                    index = curAction.index
 
         return utility
-
-    def max(self, state, moveNum, actions, bestAction):
-        v = -999
-
-        if not(actions):
-            nextState = State(state.board, state.opponent_row, state.player)
-            v = self.minimax(nextState, moveNum + 1)
-
-        while (actions):
-            curAction = actions.pop()
-            nextState = state.result(curAction)
-            tempV = self.minimax(nextState, moveNum + 1)
-
-            if (v <= tempV):
-                v = tempV
-                if (moveNum == 1):
-                    bestAction = curAction
-                    index = curAction.index
-        return v
-
-    def min(self, state, moveNum, actions, bestAction):
-        v = 999
-
-        if not(actions):
-            nextState = State(state.board, state.opponent_row, state.player)
-            v = self.minimax(nextState, moveNum + 1)
-
-        while (actions):
-            curAction = actions.pop(0)
-            nextState = state.result(curAction)
-            tempV = self.minimax(nextState, moveNum + 1)
-
-            if (v > tempV):
-                v = tempV
-                if (moveNum == 1):
-                    bestAction = curAction
-                    index = curAction.index
-        return v
-
 
     def move(self, state):
         """
@@ -71,7 +60,7 @@ class MinimaxPlayer(Player):
         :param state: State, the current state of the board.
         :return: Action, the next move
         """
-        global player, bestAction
+        global player
         player = state.player
         utility = self.minimax(state, 1)
 
