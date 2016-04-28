@@ -8,12 +8,23 @@ class MinimaxPlayer(Player):
     def __init__(self):
         self.cache ={}
 
-    #player = None
+    def move(self, state):
+        """
+        Calculates the best move from the given board using the minimax
+        algorithm.
+        :param state: State, the current state of the board.
+        :return: Action, the next move
+        """
+        global player
+        player = state.player
+        utility = self.minimax(state, 1)
+        print utility
+        return bestAction
 
     def minimax(self, state, moveNum):
         global bestAction
-        index = state.M * 2 + 2
         actions = state.actions()
+        index = (2 * state.M) + 2
 
         # return utility if terminal
         if state.is_terminal():
@@ -27,15 +38,17 @@ class MinimaxPlayer(Player):
             maxTurn = False
             utility = 999
 
-        if not(actions):
-            nextState = State(state.board, state.opponent_row, state.player)
+        if not actions:
+            nextState = state.result(None)
             utility = self.minimax(nextState, moveNum + 1)
 
+        # while actions != []
         while (actions):
             if maxTurn:
                 curAction = actions.pop()
             else:
                 curAction = actions.pop(0)
+
             nextState = state.result(curAction)
             tempV = self.minimax(nextState, moveNum + 1)
 
@@ -45,23 +58,10 @@ class MinimaxPlayer(Player):
                     bestAction = curAction
                     index = curAction.index
 
-            elif utility > tempV:
+            if (not maxTurn and utility > tempV):
                 utility = tempV
                 if (moveNum == 1):
                     bestAction = curAction
                     index = curAction.index
 
         return utility
-
-    def move(self, state):
-        """
-        Calculates the best move from the given board using the minimax
-        algorithm.
-        :param state: State, the current state of the board.
-        :return: Action, the next move
-        """
-        global player
-        player = state.player
-        utility = self.minimax(state, 1)
-
-        return bestAction
