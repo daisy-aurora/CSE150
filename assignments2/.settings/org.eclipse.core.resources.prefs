@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//solutions/p1_minimax_player.py=utf-8
 encoding//solutions/p2_alphabeta_player.py=utf-8
+encoding//solutions/p3_evaluation_player.py=utf-8
 encoding//src/assignment2.py=utf-8
 encoding//src/human_player.py=utf-8
 encoding//src/random_player.py=utf-8

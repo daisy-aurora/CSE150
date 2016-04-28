@@ -33,15 +33,13 @@ class AlphaBetaPlayer(Player):
 
         actions = state.actions()
         
-        if not(actions):
+        if not actions:
             #print("hello? amI here?")
             nextState = state.result(None)
             utility = self.minValue(nextState, alpha, beta)
             
-        while (actions):
-            curAction = actions.pop(0)
-            #print(curAction)
-            nextState = state.result(curAction)
+        for action in actions:
+            nextState = state.result(action)
 
             temp = self.minValue(nextState, alpha, beta)
             
@@ -49,7 +47,7 @@ class AlphaBetaPlayer(Player):
             # v <- max(v, temp)
             if (temp > utility):
                 utility = temp
-                self.cache[state.ser()] = (curAction, utility)
+                self.cache[state.ser()] = (action, utility)
 
             # if v >= beta then return v
             if (utility >= beta):
@@ -78,15 +76,13 @@ class AlphaBetaPlayer(Player):
 
         actions = state.actions()
 
-        if not(actions):
+        if not actions:
             #print("inside min value not actions!")
             nextState = state.result(None)
             utility = self.maxValue(nextState, alpha, beta)
 
-        while (actions):
-            curAction = actions.pop(0)
-            #print(curAction)
-            nextState = state.result(curAction)
+        for action in actions:
+            nextState = state.result(action)
 
             temp = self.maxValue(nextState, alpha, beta)
             
@@ -95,7 +91,7 @@ class AlphaBetaPlayer(Player):
             if (temp < utility):
                 utility = temp
                 #print(state.ser())
-                self.cache[state.ser()] = (curAction, utility)
+                self.cache[state.ser()] = (action, utility)
 
             # if v <= alpha then return v
             if (utility <= alpha):
