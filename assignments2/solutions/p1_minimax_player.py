@@ -9,9 +9,10 @@ class MinimaxPlayer(Player):
         self.cache ={}
 
     player = None
+    bestAction = None
 
     def minimax(self, state, moveNum):
-        global index
+        global index, bestAction
         index = state.M * 2 + 2
         actions = state.actions()
 
@@ -24,7 +25,7 @@ class MinimaxPlayer(Player):
 
         return utility
 
-    def max(self, state, moveNum, actions):
+    def max(self, state, moveNum, actions, bestAction):
         v = -999
 
         if not(actions):
@@ -39,11 +40,11 @@ class MinimaxPlayer(Player):
             if (v <= tempV):
                 v = tempV
                 if (moveNum == 1):
-                    bestMove(curAction)
+                    bestAction = curAction
                     index = curAction.index
         return v
 
-    def min(self, state, moveNum, actions):
+    def min(self, state, moveNum, actions, bestAction):
         v = 999
 
         if not(actions):
@@ -58,13 +59,10 @@ class MinimaxPlayer(Player):
             if (v > tempV):
                 v = tempV
                 if (moveNum == 1):
-                    bestMove(curAction)
+                    bestAction = curAction
                     index = curAction.index
         return v
 
-    def bestMove(action):
-        global bestAction
-        bestAction = action
 
     def move(self, state):
         """
@@ -73,7 +71,7 @@ class MinimaxPlayer(Player):
         :param state: State, the current state of the board.
         :return: Action, the next move
         """
-        global player
+        global player, bestAction
         player = state.player
         utility = self.minimax(state, 1)
 
