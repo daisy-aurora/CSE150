@@ -9,9 +9,9 @@ class MinimaxPlayer(Player):
         self.cache ={}
 
     player = None
-    bestAction = None
 
     def minimax(self, state, moveNum):
+        global index
         index = state.M * 2 + 2
         actions = state.actions()
 
@@ -39,7 +39,7 @@ class MinimaxPlayer(Player):
             if (v <= tempV):
                 v = tempV
                 if (moveNum == 1):
-                    bestAction = curAction
+                    bestMove(curAction)
                     index = curAction.index
         return v
 
@@ -58,9 +58,13 @@ class MinimaxPlayer(Player):
             if (v > tempV):
                 v = tempV
                 if (moveNum == 1):
-                    bestAction = curAction
+                    bestMove(curAction)
                     index = curAction.index
         return v
+
+    def bestMove(action):
+        global bestAction
+        bestAction = action
 
     def move(self, state):
         """
@@ -69,9 +73,8 @@ class MinimaxPlayer(Player):
         :param state: State, the current state of the board.
         :return: Action, the next move
         """
-        global player, bestAction
+        global player
         player = state.player
         utility = self.minimax(state, 1)
 
         return bestAction
-        #raise NotImplementedError("Need to implement this method")
