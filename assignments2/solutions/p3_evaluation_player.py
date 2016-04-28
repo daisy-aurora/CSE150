@@ -35,4 +35,44 @@ class EvaluationPlayer(Player):
         """
         Evaluates the state for the player with the given row
         """
-        raise NotImplementedError("Need to implement this method")
+
+        # row 0's variables
+        zerosGoalNum = state.M
+        zerosStonesGoal = 0
+        zerosStonesLeft = 0
+
+        # row 1's variables
+        onesGoalNum = (2 * state.M) + 1
+        onesStonesGoal = 0
+        onesStonesLeft = 0
+
+        # initialize stones in row 0 & 1's side
+        for i in range (0, zerosGoalNum):
+            zerosStonesLeft += state.board[i]
+
+        for i in range (zerosGoalNum + 1, onesGoalNum):
+            onesStonesLeft += state.board[i]
+
+        zerosStonesGoal = state.board[zerosGoalNum]
+        onesStonesGoal = state.board[onesGoalNum]
+
+        # There's only 2 row: 0 and 1
+        if my_row == 0:
+            stonesLeft = zerosStonesLeft - onesStonesLeft
+            goalScore = zerosStonesGoal - onesStonesGoal
+
+            s = stonesLeft + goalScore
+
+        else: # my_row = 1
+            stonesLeft = onesStonesLeft - zerosStonesLeft
+            goalScore =  onesStonesGoal - zerosStonesGoal
+
+            s = stonesLeft + goalScore
+
+        # 1/2MN
+        denominator = 2 * zerosGoalNum * onesGoalNum
+        score = float (s)/denominator
+
+        return score
+
+        #raise NotImplementedError("Need to implement this method")
