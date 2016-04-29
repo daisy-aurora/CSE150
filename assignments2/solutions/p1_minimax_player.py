@@ -18,7 +18,7 @@ class MinimaxPlayer(Player):
         global player
         player = state.player
         utility = self.minimax(state, 1)
-        print utility
+        #print utility
         return bestAction
 
     def minimax(self, state, moveNum):
