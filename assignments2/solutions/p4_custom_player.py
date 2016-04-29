@@ -6,7 +6,7 @@ __email__ = 'daz040@eng.ucsd.edu'
 from assignment2 import Player
 
 
-class PleasePleaseChangeThisToSomethingSomethingPlayer(Player):
+class CustomPlayer(Player):
     """The custom player implementation.
     """
 
