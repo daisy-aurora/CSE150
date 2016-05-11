@@ -17,7 +17,33 @@ def ac3(csp, arcs=None):
     queue_arcs = deque(arcs if arcs is not None else csp.constraints.arcs())
 
     # TODO implement this
-    pass
+    queue_arcs = deque(arcs if arcs is not None else csp.constraints.arcs())
+    while queue_arcs:
+        var = queue_arcs.popleft()
+
+        rev = False
+        cs = csp.constraints[var[0]]
+
+        for i in var[0].domain:
+            satisfied = False
+            for j in var[1].domain:
+                if cs[0].is_satisfied(i,j):
+                    satisfied = True
+
+            if not satisfied:
+                var[0].domain.remove(i)
+                rev = True
+
+        if rev:
+            if len(var[0].domain) == 0:
+                return False
+
+            for i in csp.constraints[var[0]]:
+                if not (i.var2 == var[1]):
+                    queue_arcs.append(i.var2, var[0])
+
+    return True
+
 
 def revise(csp, xi, xj):
     # You may additionally want to implement the 'revise' method.
