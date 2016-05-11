@@ -48,7 +48,23 @@ def backtrack(csp):
     """
 
     # TODO implement this
-    pass
+    solution = is_complete(csp)
 
+    if solution:
+        return solution
 
+    nextVar = select_unassigned_variable(csp)
 
+    # solution = False here
+
+    for i in order_domain_values(csp, nextVar):
+        if is_consistent(csp, nextVar, i):
+            csp.variables.begin_transaction()
+            nextVar.assign(i)
+
+            if backtrack(csp):
+                return True
+
+            csp.variables.rollback()
+
+    return solution
