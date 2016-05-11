@@ -1,0 +1,10 @@
+X=dict([(name, Variable(name,['red','green'])) for name in ['X','Y','Z']])
+C=[
+    Constraint(X['X'], X['Y'], operator.ne),
+    Constraint(X['Y'], X['Z'], operator.ne),
+    Constraint(X['Z'], X['X'], operator.ne)
+]
+csp=BinaryCSP(X.values(),C)
+X['X'].domain = ['red','green']
+X['Y'].domain = ['red','green']
+X['Z'].domain = ['red','green']

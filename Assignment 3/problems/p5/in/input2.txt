@@ -1,0 +1,13 @@
+V=Variable('V',['red','green','blue'])
+A=Variable('A',['red'])
+B=Variable('B',['red','green','blue'])
+C=Variable('C',['red','blue'])
+D=Variable('D',['violet','magenta'])
+CS=[
+    Constraint(V, A, operator.ne),
+    Constraint(V, B, operator.ne),
+    Constraint(V, C, operator.ne),
+    Constraint(V, D, operator.ne)
+]
+csp=BinaryCSP([V,A,B,C,D],CS)
+variable=V

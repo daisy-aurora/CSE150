@@ -1,0 +1,6 @@
+V=Variable('V',[1,2])
+W=Variable('W',[1])
+X=Variable('X',[1,2,3])
+Y=Variable('Y',[1,2])
+Z=Variable('Z',[1,2,3,4])
+csp=BinaryCSP([V,W,X,Y,Z],[Constraint(X,Y,operator.ne)])
