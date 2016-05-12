@@ -11,7 +11,9 @@ def is_complete(csp):
     # or when the domain of the variable has been reduced to a single value.)
 
     # TODO implement this
+    
+    #iterate through
     for i in csp.variables:
-        if i.is_assigned():
-          return True;
-    return False;
+        if not i.is_assigned():
+          return False;
+    return True;
