@@ -15,5 +15,5 @@ def is_complete(csp):
     #iterate through
     for i in csp.variables:
         if not i.is_assigned():
-          return False;
-    return True;
+          return False
+    return True
