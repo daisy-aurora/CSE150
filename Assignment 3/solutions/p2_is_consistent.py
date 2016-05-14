@@ -13,6 +13,6 @@ def is_consistent(csp, variable, value):
     # TODO implement this
     for i in csp.constraints[variable]:
         if i.var2.is_assigned():
-            if i.is_satisfied(value, i.var2.value):
-                return True
-    return False
+            if not i.is_satisfied(value, i.var2.value):
+                return False
+    return True

@@ -17,7 +17,6 @@ def ac3(csp, arcs=None):
     queue_arcs = deque(arcs if arcs is not None else csp.constraints.arcs())
 
     # TODO implement this
-    queue_arcs = deque(arcs if arcs is not None else csp.constraints.arcs())
     while queue_arcs:
         var = queue_arcs.popleft()
 

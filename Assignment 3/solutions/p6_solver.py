@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from collections import deque
+from p1_is_complete import is_complete
+from p2_is_consistent import is_consistent
+from p3_basic_backtracking import *
 
 
 def inference(csp, variable):
@@ -32,8 +35,26 @@ def backtrack(csp):
     """
 
     # TODO copy from p3
-    return False
+    solution = is_complete(csp)
 
+    if solution:
+        return solution
+
+    nextVar = select_unassigned_variable(csp)
+
+    # solution = False here
+
+    for i in order_domain_values(csp, nextVar):
+        if is_consistent(csp, nextVar, i):
+            csp.variables.begin_transaction()
+            nextVar.assign(i)
+
+            if backtrack(csp):
+                return True
+
+            csp.variables.rollback()
+
+    return solution
 
 def ac3(csp, arcs=None):
     """Executes the AC3 or the MAC (p.218 of the textbook) algorithms.
@@ -50,4 +71,28 @@ def ac3(csp, arcs=None):
     queue_arcs = deque(arcs if arcs is not None else csp.constraints.arcs())
 
     # TODO copy from p4
-    pass
+    while queue_arcs:
+        var = queue_arcs.popleft()
+
+        rev = False
+        cs = csp.constraints[var[0]]
+
+        for i in var[0].domain:
+            satisfied = False
+            for j in var[1].domain:
+                if cs[0].is_satisfied(i,j):
+                    satisfied = True
+
+            if not satisfied:
+                var[0].domain.remove(i)
+                rev = True
+
+        if rev:
+            if len(var[0].domain) == 0:
+                return False
+
+            for i in csp.constraints[var[0]]:
+                if not (i.var2 == var[1]):
+                    queue_arcs.append(i.var2, var[0])
+
+    return True

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from test.test_support import temp_cwd
 
 def select_unassigned_variable(csp):
     """Selects the next unassigned variable, or None if there is no more unassigned variables
@@ -62,8 +63,33 @@ def order_domain_values(csp, variable):
     """
 
     # TODO implement this
-    constraints = []
     neighbor = []
-    
-    # fill in the list first. 
-    pass
+    result = []
+
+    for constraint in csp.constraints:
+        if constraint.var1 == variable:
+            neighbor.append(constraint.var2)
+        if constraint.var2 == variable:
+            neighbor.append(constraint.var1)      
+
+    for i in range (0, len(variable.domain)):
+        count = 0;
+        for v in neighbor:
+            if variable.domain[i] in v.domain:
+                count += 1;
+        #insert to the result table based on the index
+        result.insert(i,count);
+
+    sortedResult = []
+    #sorted the result list
+    for i in range (0,len(variable.domain)):
+        temp = max(result)
+        #insert the maximum first, put the second max in front of the max
+        #etc.. until all the result is inserted
+        sortedResult.insert(0, variable.domain[result.index(temp)])
+        
+        #since the value is already inserted, 
+        #put 0 so it won't mess the calculation in the next iteration
+        result[result.index(temp)] = 0
+
+    return sortedResult
