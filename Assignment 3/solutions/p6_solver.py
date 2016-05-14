@@ -4,6 +4,7 @@ from collections import deque
 from p1_is_complete import is_complete
 from p2_is_consistent import is_consistent
 from p3_basic_backtracking import *
+#from p5_ordering import select_unassigned_variable, order_domain_values
 
 
 def inference(csp, variable):
