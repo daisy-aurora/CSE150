@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """ generated source for module BayesianNetwork """
 from Assignment4 import *
+import random
 #
 #  * A bayesian network
 #  * @author Panqu
@@ -80,12 +81,27 @@ class BayesianNetwork(object):
     #
     def priorSample(self):
         # see page 531
-        x = []
+        x = {}
+        
+
         # foreach variable x[i] is a random sample from P(Xi | parents(Xi))
-        for node in self.rootNodes:
-            x[node.variable.getName()] =
+        for node in sorted(self.varMap):
+            y = random.random()
+            if y <= self.varMap.get(node).getProbability(x, True):
+                x[node.getName()] = True
+            else:
+                x[node.getName()] = False
         return x
 
+    def Normalize(self, input):
+        sum = 0
+        for x in input:
+            sum += x
+            
+        if sum == 0:
+            return 0,0
+        else:
+            return float(input[0])/sum
     #
     #     * Returns an estimate of P(queryVal=true|givenVars) using rejection sampling
     #     * @param queryVar Query variable in probability query
@@ -97,28 +113,39 @@ class BayesianNetwork(object):
         #  TODO
         #return 0
         # see page 533
-        count = [0] * sizeof(queryVar)
-        for i = 1 to numSamples:
-            x = priorSample(self)
+        query1 = 0
+        query2 = 0
+        for i in range (1, numSamples):
+            x = self.priorSample()
 
-            for j in queryVar:
-                if x == givenVars:
-                    count[j] = count[j] + 1
+            for j in givenVars:
+                if x[j.getName()] == givenVars[j]:
+                    if x[queryVar.getName()]:
+                        query1 = query1 + 1
+                    else:
+                        query2 = query2 + 1
 
-        return Normalize(count)
+        return self.Normalize([query1, query2])
 
     #
     # helper function to perform weighted sampling that returns an event and a weighted
     #
     def weightedSample(self, givenVars):
-        # see page 534
+        #see page 534
         w = 1
-        for x in givenVars:
-            for node in self.rootNodes:
-                if e.contain(node.value):
-                    w = w * #P(Xi = xi | parents(Xi))
+        x = {}
+        #for y in givenVars:
+        for node in sorted(self.varMap):
+            if givenVars.get(self.varMap.get(node).getVariable()) is not None:
+                w = w * self.varMap.get(node).getProbability(x, True)#P(Xi = xi | parents(Xi))
+                x[node.getName()] = self.varMap.get(node).getProbability(x, True)
+            else:
+                #x[i] = random asmple from P(Xi | parents(Xi))
+                z = random.randint(0,1)
+                if z <= 0.5:
+                    x[node.getName()] = True
                 else:
-                    #x[i] = random asmple from P(Xi | parents(Xi))
+                    x[node.getName()] = False
         return x,w
 
     #
@@ -132,14 +159,27 @@ class BayesianNetwork(object):
         #  TODO
         #return 0
         # see page 534
-        count = [0] * sizeof(queryVar)
-        for i = 1 to numSamples:
-            x,w = weightedSample(self, givenVars)
+        query1 = 0
+        query2 = 0
+        for i in range (1, numSamples):
+            x,w = self.weightedSample(givenVars)
 
-            for j in queryVar:
-                count[j] = count[j] + w
+            for j in givenVars:
+                if x[j.getName()] == givenVars[j]:
+                    if x[queryVar.getName()]:
+                        query1 = query1 + w
+                    else:
+                        query2 = query2 + w
 
-        return Normalize(count)
+        return self.Normalize([query1, query2])
+#         count = [0] * sizeof(queryVar)
+#         for i = 1 to numSamples:
+#             x,w = weightedSample(self, givenVars)
+#  
+#             for j in queryVar:
+#                 count[j] = count[j] + w
+#  
+#         return Normalize(count)
 
     #
     #     * Returns an estimate of P(queryVal=true|givenVars) using Gibbs sampling
@@ -151,18 +191,18 @@ class BayesianNetwork(object):
     def performGibbsSampling(self, queryVar, givenVars, numTrials):
         """ generated source for method performGibbsSampling """
         #  TODO
-        #return 0
+        return 0
         # see page 537
-        count = [0] * sizeof(queryVar)
-        Z = self.rootNodes
-
-        for i = 1 to numSamples:
-            for z in Z:
-                #set the value of z in x by sampling from P(z|mb(z))
-                # x is the current state of the network, initially copied from givenVars
-                z =
-
-                for j in queryVar:
-                    count[j] = count[j] + 1
-
-        return Normalize(count)
+#         count = [0] * sizeof(queryVar)
+#         Z = self.rootNodes
+# 
+#         for i = 1 to numSamples:
+#             for z in Z:
+#                 #set the value of z in x by sampling from P(z|mb(z))
+#                 # x is the current state of the network, initially copied from givenVars
+#                 z =
+# 
+#                 for j in queryVar:
+#                     count[j] = count[j] + 1
+# 
+#         return Normalize(count)

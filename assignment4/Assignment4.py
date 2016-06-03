@@ -38,7 +38,12 @@ class CPT(object):
         """ generated source for method getProbability """
         if self.parentVariable == None:
             return float(self.probability) if (value == True) else 1 - float(self.probability)
-        currentVal = assignments.get(self.parentVariable.getName())
+        parent = self.parentVariable
+        currentVal = True
+        if parent in assignments:
+            currentVal = assignments[parent]
+        else:
+            currentVal = assignments.get(parent.getName())
         if self.trueTable != None:
             if currentVal == True:
                 return self.trueTable.getProbability(assignments, value)
