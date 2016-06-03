@@ -83,7 +83,6 @@ class BayesianNetwork(object):
         # see page 531
         x = {}
         
-
         # foreach variable x[i] is a random sample from P(Xi | parents(Xi))
         for node in sorted(self.varMap):
             y = random.random()
@@ -133,20 +132,24 @@ class BayesianNetwork(object):
     def weightedSample(self, givenVars):
         #see page 534
         w = 1
-        x = {}
+        x = Sample()
+        
+        for var in givenVars:
+            x.setAssignment(var.getName(), givenVars[var])
         #for y in givenVars:
-        for node in sorted(self.varMap):
-            if givenVars.get(self.varMap.get(node).getVariable()) is not None:
-                w = w * self.varMap.get(node).getProbability(x, True)#P(Xi = xi | parents(Xi))
-                x[node.getName()] = self.varMap.get(node).getProbability(x, True)
+        for node in sorted(self.varMap.keys()):
+            y = random.random()
+            if x.getValue(node.getName()) is not None:
+                w = x.getWeight() * self.varMap.get(node).getProbability(x.assignments, x.assignments.get(node.getName()))#P(Xi = xi | parents(Xi))
+                #x[node.getName()] = self.varMap.get(node).getProbability(x, True)
+                x.setWeight(w)
             else:
                 #x[i] = random asmple from P(Xi | parents(Xi))
-                z = random.randint(0,1)
-                if z <= 0.5:
-                    x[node.getName()] = True
+                if y <= self.varMap.get(node).getProbability(x.assignments, True):
+                    x.assignments[node.getName()] = True
                 else:
-                    x[node.getName()] = False
-        return x,w
+                    x.assignments[node.getName()] = False
+        return x.assignments,x.getWeight()
 
     #
     #     * Returns an estimate of P(queryVal=true|givenVars) using weighted sampling
@@ -162,14 +165,12 @@ class BayesianNetwork(object):
         query1 = 0
         query2 = 0
         for i in range (1, numSamples):
-            x,w = self.weightedSample(givenVars)
+            (x,w) = self.weightedSample(givenVars)
 
-            for j in givenVars:
-                if x[j.getName()] == givenVars[j]:
-                    if x[queryVar.getName()]:
-                        query1 = query1 + w
-                    else:
-                        query2 = query2 + w
+            if x[queryVar.getName()]:
+                query1 = query1 + w
+            else:
+                query2 = query2 + w
 
         return self.Normalize([query1, query2])
 #         count = [0] * sizeof(queryVar)
