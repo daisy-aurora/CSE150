@@ -82,7 +82,7 @@ class BayesianNetwork(object):
     def priorSample(self):
         # see page 531
         x = {}
-        
+
         # foreach variable x[i] is a random sample from P(Xi | parents(Xi))
         for node in sorted(self.varMap):
             y = random.random()
@@ -96,7 +96,7 @@ class BayesianNetwork(object):
         sum = 0
         for x in input:
             sum += x
-            
+
         if sum == 0:
             return 0,0
         else:
@@ -133,7 +133,7 @@ class BayesianNetwork(object):
         #see page 534
         w = 1
         x = Sample()
-        
+
         for var in givenVars:
             x.setAssignment(var.getName(), givenVars[var])
         #for y in givenVars:
@@ -176,11 +176,52 @@ class BayesianNetwork(object):
 #         count = [0] * sizeof(queryVar)
 #         for i = 1 to numSamples:
 #             x,w = weightedSample(self, givenVars)
-#  
+#
 #             for j in queryVar:
 #                 count[j] = count[j] + w
-#  
+#
 #         return Normalize(count)
+
+    def initEventAndNon(self, sortedG, unsortedG):
+        nonEv = []
+        ev = {}
+        for x in self.varMap.keys():
+            if x not in sortedG:
+                nonEv.append(x)
+                rand = random.random()
+                val = True
+
+                if rand <= 0.5:
+                    val = False
+
+                event[x.getName()] = val
+
+            else:
+                ev[x.getName()] = givenVars(x)
+
+        return nonEv, ev
+
+    def getNew(self, map, b, x):
+        probChild = 1.0
+        query = {}
+
+        for parent in self.varMap[x].getParents():
+            query[parent.getVariable().getName()] = map[parent.getVariable().getName()]
+
+        probParent = self.varMap[x].getProbability(query, b)
+
+        for child in self.varMap[x].getChildren():
+            parents = {}
+
+            for p in child.getParents():
+                if(parents.getVariable().equals(self.varMap[x].getVariable())):
+                    parents[self.varMap[x].getVariable().getName()] = b
+                else:
+                    parents[p.getVariable().getName()] = map[p.getVariable().getName()]
+
+            probChild = probChild * child.getProbability(parents, map[child.getVariable().getName()])
+
+        return (probParent * probChild)
 
     #
     #     * Returns an estimate of P(queryVal=true|givenVars) using Gibbs sampling
@@ -192,18 +233,57 @@ class BayesianNetwork(object):
     def performGibbsSampling(self, queryVar, givenVars, numTrials):
         """ generated source for method performGibbsSampling """
         #  TODO
-        return 0
+        #return 0
         # see page 537
+        query1 = 0.0
+        query2 = 0.0
+        givenVarsSorted = sorted(givenVars)
+        nonEv, event = self.initEventAndNon(givenVarsSorted, unsortedG)
+
+        for i in range (1, numTrials):
+            for x in nonEv:
+                markov = self.markovBlanket(self.varMap[x])
+                currentEv = {}
+
+                for node in markov:
+                    currentEv[node.getVariable().getName()] = event[node.getVariable().getName()]
+
+                probOfTrue = self.getNew(self, True, surroundMap, x)
+                probOfFalse = self.getNew(self, False, surroundMap, x)
+                probCombine = probOfFalse + probOfTrue
+
+                if probCombine == 0:
+                    val = 0
+
+                val = 1.0/probCombine
+                val = val * probOfTrue
+
+                rand = random.random()
+
+                if val >= rand:
+                    event[self.varMap[x].getVariable().getName()] = True
+                else:
+                    event[self.varMap[x].getVariable().getName()] = False
+
+                if event[queryVar.getName()]:
+                    query1 = query1 + 1.0
+                else:
+                    query2 = query2 + 1.0
+
+        result = query1/(float(len(nonEv) * numTrials))
+        
+        return self.Normalize([query1, query2])
+
 #         count = [0] * sizeof(queryVar)
 #         Z = self.rootNodes
-# 
+#
 #         for i = 1 to numSamples:
 #             for z in Z:
 #                 #set the value of z in x by sampling from P(z|mb(z))
 #                 # x is the current state of the network, initially copied from givenVars
 #                 z =
-# 
+#
 #                 for j in queryVar:
 #                     count[j] = count[j] + 1
-# 
+#
 #         return Normalize(count)
