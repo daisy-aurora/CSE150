@@ -197,11 +197,11 @@ class BayesianNetwork(object):
                 ev[x.getName()] = val
 
             else:
-                ev[x.getName()] = unsortedG(x)
+                ev[x.getName()] = unsortedG[x]
 
         return nonEv, ev
 
-    def getNew(self, map, b, x):
+    def getNew(self, b, map, x):
         probChild = 1.0
         query = {}
 
@@ -214,7 +214,7 @@ class BayesianNetwork(object):
             parents = {}
 
             for p in child.getParents():
-                if(parents.getVariable().equals(self.varMap[x].getVariable())):
+                if(p.getVariable().equals(self.varMap[x].getVariable())):
                     parents[self.varMap[x].getVariable().getName()] = b
                 else:
                     parents[p.getVariable().getName()] = map[p.getVariable().getName()]
@@ -264,8 +264,8 @@ class BayesianNetwork(object):
                 for node in markov:
                     currentEv[node.getVariable().getName()] = event[node.getVariable().getName()]
 
-                probOfTrue = self.getNew(self, True, currentEv, x)
-                probOfFalse = self.getNew(self, False, currentEv, x)
+                probOfTrue = self.getNew(True, currentEv, x)
+                probOfFalse = self.getNew(False, currentEv, x)
                 probCombine = probOfFalse + probOfTrue
 
                 if probCombine == 0:
