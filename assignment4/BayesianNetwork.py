@@ -194,10 +194,10 @@ class BayesianNetwork(object):
                 if rand <= 0.5:
                     val = False
 
-                event[x.getName()] = val
+                ev[x.getName()] = val
 
             else:
-                ev[x.getName()] = givenVars(x)
+                ev[x.getName()] = unsortedG[x]
 
         return nonEv, ev
 
@@ -248,8 +248,8 @@ class BayesianNetwork(object):
                 for node in markov:
                     currentEv[node.getVariable().getName()] = event[node.getVariable().getName()]
 
-                probOfTrue = self.getNew(self, True, surroundMap, x)
-                probOfFalse = self.getNew(self, False, surroundMap, x)
+                probOfTrue = self.getNew(self, True, currentEv, x)
+                probOfFalse = self.getNew(self, False, currentEv, x)
                 probCombine = probOfFalse + probOfTrue
 
                 if probCombine == 0:
