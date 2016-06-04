@@ -197,7 +197,7 @@ class BayesianNetwork(object):
                 event[x.getName()] = val
 
             else:
-                ev[x.getName()] = givenVars(x)
+                ev[x.getName()] = unsortedG(x)
 
         return nonEv, ev
 
