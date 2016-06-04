@@ -197,7 +197,11 @@ class BayesianNetwork(object):
                 ev[x.getName()] = val
 
             else:
+<<<<<<< HEAD
                 ev[x.getName()] = unsortedG[x]
+=======
+                ev[x.getName()] = unsortedG(x)
+>>>>>>> c0b6f305114cc004986fc8cc723c33e477d622b4
 
         return nonEv, ev
 
