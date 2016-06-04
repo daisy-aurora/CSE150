@@ -248,8 +248,8 @@ class BayesianNetwork(object):
                 for node in markov:
                     currentEv[node.getVariable().getName()] = event[node.getVariable().getName()]
 
-                probOfTrue = self.getNew(self, True, surroundMap, x)
-                probOfFalse = self.getNew(self, False, surroundMap, x)
+                probOfTrue = self.getNew(self, True, currentEv, x)
+                probOfFalse = self.getNew(self, False, currentEv, x)
                 probCombine = probOfFalse + probOfTrue
 
                 if probCombine == 0:
