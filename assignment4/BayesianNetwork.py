@@ -238,7 +238,7 @@ class BayesianNetwork(object):
         query1 = 0.0
         query2 = 0.0
         givenVarsSorted = sorted(givenVars)
-        nonEv, event = self.initEventAndNon(givenVarsSorted, unsortedG)
+        nonEv, event = self.initEventAndNon(givenVarsSorted, givenVars)
 
         for i in range (1, numTrials):
             for x in nonEv:
@@ -271,7 +271,6 @@ class BayesianNetwork(object):
                     query2 = query2 + 1.0
 
         result = query1/(float(len(nonEv) * numTrials))
-        
         return self.Normalize([query1, query2])
 
 #         count = [0] * sizeof(queryVar)
