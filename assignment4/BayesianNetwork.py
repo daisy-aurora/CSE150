@@ -197,11 +197,7 @@ class BayesianNetwork(object):
                 ev[x.getName()] = val
 
             else:
-<<<<<<< HEAD
-                ev[x.getName()] = unsortedG[x]
-=======
                 ev[x.getName()] = unsortedG(x)
->>>>>>> c0b6f305114cc004986fc8cc723c33e477d622b4
 
         return nonEv, ev
 
@@ -226,6 +222,22 @@ class BayesianNetwork(object):
             probChild = probChild * child.getProbability(parents, map[child.getVariable().getName()])
 
         return (probParent * probChild)
+
+    def markovBlanket(self, node):
+        markov = []
+
+        for p in node.getParents():
+            markov.append(p)
+
+        for c in node.getChildren():
+            if c not in markov:
+                markov.append(c)
+
+                for parent in c.getParents():
+                    if(parent != node) and (parent not in markov):
+                        markov.append(parent)
+
+        return markov
 
     #
     #     * Returns an estimate of P(queryVal=true|givenVars) using Gibbs sampling
